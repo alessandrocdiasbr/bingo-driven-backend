@@ -1,55 +1,52 @@
-name: Pipeline Automatizado
+name: Backend CI/CD Pipeline
+
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
+
 jobs:
-  CI-ContinuousIntegration:
+  test:
+    name: Run Integration Tests
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-      - name: Make new a .env file
-        uses: SpicyPizza/create-envfile@v2.0.3
-        with:
-          envkey_PORT: 5001
-          envkey_POSTGRES_PASSWORD: "postgres"
-          envkey_POSTGRES_USER: "postgres"
-          envkey_POSTGRES_DB: "tests"
-          envkey_DATABASE_URL: "postgres://postgres:postgres@postgres:5432/tests"
-          directory: .
-          file_name: .env.test
-      - name: Run tests
-        run: docker compose -f docker-compose-test.yml run backend npm run test:ci
 
-  CD-DeployToRender:
-    name: Deploy to Render
-    runs-on: ubuntu-latest
-    needs: CI-ContinuousIntegration
-    steps:
-      - name: Deploy to production
-        uses: johnbeynon/render-deploy-action@v0.0.8
-        with:
-          service-id: ${{ secrets.SERVICE_ID }}
-          api-key: ${{ secrets.RENDER_API_KEY }}
-
-  CD-PublishToDockerHub:
-    name: Build and Push Docker Image
-    runs-on: ubuntu-latest
-    needs: CD-DeployToRender
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      - name: Log in to Docker Hub
+
+      - name: Setup Node.js v20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm run test
+        env:
+          DATABASE_URL: ${{ secrets.TEST_DATABASE_URL }}
+
+  deploy:
+    name: Build, Push and Deploy
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
       - name: Build and push Docker image
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/daily-kindness-backend:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/bingo-backend:latest
+
+      - name: Trigger Render Deploy
+        run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
