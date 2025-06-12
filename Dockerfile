@@ -20,6 +20,8 @@ RUN npm run build # Supondo que você tenha um script "build" em package.json pa
 FROM node:20-alpine AS production
 WORKDIR /app
 
+RUN apk add openssl
+
 
 ENV NODE_ENV=production
 
