@@ -2,7 +2,7 @@
 
 Sistema para a administração de jogos de bingo.
 
-![demonstração do bingo](demo-bingo.gif)
+[demonstração do bingo](demo-bingo.gif)
 
 ## 🚀 Deploy
 
