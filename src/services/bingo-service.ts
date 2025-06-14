@@ -1,5 +1,4 @@
-import { Number } from "@prisma/client";
-
+import { DrawnNumber } from "@prisma/client";
 import { createNewBingoGame, getAllNumbersFromBingoGame, getBingoGameById, setNumberForBingoGame, updateBingoGameStatusToFinished } from "../repositories/bingo-repository";
 import BINGORULES from "../config/bingo-rules";
 import { badRequest, notFound } from "../errors";
@@ -20,7 +19,6 @@ export async function createNewGame() {
 
 export async function generateNewNumber(gameId: number) {
   await getRunningBingoGame(gameId);
-
   const numbers = await fetchNumbers(gameId);
   const extractedValues = extractOnlyTheValues(numbers);
   let nextNumber = generateRandomNumberNotUsed(extractedValues, BINGORULES.min, BINGORULES.max);
@@ -30,18 +28,17 @@ export async function generateNewNumber(gameId: number) {
 
 export async function finishGame(gameId: number) {
   await getRunningBingoGame(gameId);
-
   return await updateBingoGameStatusToFinished(gameId);
 }
 
-async function fetchNumbers(gameId: number) {
+async function fetchNumbers(gameId: number): Promise<DrawnNumber[]> {
   const numbers = await getAllNumbersFromBingoGame(gameId);
   checkIfAllNumbersAlreadyBeenDrawn(numbers);
 
   return numbers;
 }
 
-function checkIfAllNumbersAlreadyBeenDrawn(numbers: Number[]) {
+function checkIfAllNumbersAlreadyBeenDrawn(numbers: DrawnNumber[]) {
   const allNumbersAlreadyDrawed = numbers.length === BINGORULES.max;
   if (allNumbersAlreadyDrawed) {
     throw badRequest("All numbers have already been drawn.");
@@ -57,6 +54,6 @@ async function getRunningBingoGame(gameId: number) {
   return game;
 }
 
-function extractOnlyTheValues(numbers: Number[]) {
+function extractOnlyTheValues(numbers: DrawnNumber[]) {
   return numbers.map(({ value }) => value);
 }
