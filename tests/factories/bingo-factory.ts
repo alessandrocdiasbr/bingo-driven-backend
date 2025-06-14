@@ -11,7 +11,6 @@ export async function generateNewGame(finished = false) {
 
 export async function generateFullGame() {
   const game = await generateNewGame();
-
   const numbers = [];
   for (let i = 0; i < BINGORULES.max; i++) {
     numbers.push({
@@ -20,7 +19,7 @@ export async function generateFullGame() {
     });
   }
 
-  await prisma.number.createMany({
+  await prisma.drawnNumber.createMany({
     data: numbers
   });
 

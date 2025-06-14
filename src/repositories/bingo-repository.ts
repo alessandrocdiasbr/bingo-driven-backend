@@ -16,7 +16,7 @@ export async function getBingoGameById(gameId: number, includeNumbers = false) {
 }
 
 export async function setNumberForBingoGame(gameId: number, number: number) {
-  return await prisma.number.create({
+  return await prisma.drawnNumber.create({
     data: {
       gameId,
       value: number
@@ -36,7 +36,7 @@ export async function updateBingoGameStatusToFinished(gameId: number) {
 }
 
 export async function getAllNumbersFromBingoGame(gameId: number) {
-  return await prisma.number.findMany({
+  return await prisma.drawnNumber.findMany({
     where: {
       gameId
     }
