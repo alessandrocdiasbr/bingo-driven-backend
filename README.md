@@ -8,7 +8,7 @@ Sistema para a administração de jogos de bingo.
 
 A aplicação está no ar e pode ser acessada pelos seguintes links:
 
-- **Front-end (Vercel):** `https://bingo-driven-front.vercel.app`
+- **Front-end (Vercel):** `https://bingo-driven-front.vercel.app/`
 - **Back-end (Render):** `https://bingo-driven-backend-sk9a.onrender.com`
 
 ---
