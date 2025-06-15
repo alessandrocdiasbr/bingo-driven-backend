@@ -15,9 +15,9 @@ A aplicação está no ar e pode ser acessada pelos seguintes links:
 
 ## ⚙️ Tecnologias
 
-- [cite_start]**Back-end:** Node.js, Express, Typescript, Jest e Prisma. 
-- [cite_start]**Banco de dados:** Postgres. 
-- [cite_start]**Front-end:** React e Vite. 
+- **Back-end:** Node.js, Express, Typescript, Jest e Prisma. 
+- **Banco de dados:** Postgres. 
+- **Front-end:** React e Vite. 
 - **DevOps:** Docker, Docker Compose, GitHub Actions, Render, Vercel.
 
 ---
@@ -67,13 +67,13 @@ Se preferir, você pode subir apenas o contêiner do back-end. Você precisará 
 
 ## 🛠️ Desenvolvimento (Sem Docker)
 
-- [cite_start]O projeto é fullstack e é necessário subir ambos front-end e back-end separadamente. 
+- O projeto é fullstack e é necessário subir ambos front-end e back-end separadamente. 
 - **Para o back-end:**
-  - [cite_start]Instalar as dependências com o `npm i`; 
-  - [cite_start]Criar o arquivo `.env` com base no exemplo do `.env.example`; 
-  - [cite_start]Preparar o banco de dados usando o prisma (`prisma migrate dev`); 
-  - [cite_start]Executar o comando `npm run dev`. 
+  - Instalar as dependências com o `npm i`; 
+  - Criar o arquivo `.env` com base no exemplo do `.env.example`; 
+  - Preparar o banco de dados usando o prisma (`prisma migrate dev`); 
+  - Executar o comando `npm run dev`. 
 - **Para executar os testes do back-end:**
-  - [cite_start]Criar o arquivo `.env.test` com base no exemplo do `.env.example`; 
-  - [cite_start]Prearar o banco de dados usando o Prisma (`npm run test:migration`); 
-  - [cite_start]Executar o comando `npm run test`.
+  - Criar o arquivo `.env.test` com base no exemplo do `.env.example`; 
+  - Prearar o banco de dados usando o Prisma (`npm run test:migration`); 
+  - Executar o comando `npm run test`.
